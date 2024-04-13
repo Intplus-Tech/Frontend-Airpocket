@@ -1,7 +1,7 @@
-import React from "react";
+import React from 'react';
 
 const Confirmation = () => {
-  return <div>Confirmation</div>;
+	return <div>successful payment</div>;
 };
 
 export default Confirmation;
