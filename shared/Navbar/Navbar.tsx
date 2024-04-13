@@ -51,7 +51,7 @@ const Navbar = () => {
               <DialogTrigger>
                 <p className="px-4 py-2 hover:shadow-md rounded-md">Sign In</p>
               </DialogTrigger>
-              <DialogContent className=" max-h-[90vh]   ">
+              <DialogContent className=" max-h-[70vh]   ">
                 <Login />
               </DialogContent>
             </Dialog>
