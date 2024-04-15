@@ -11,7 +11,7 @@ const TripType = ({ tripType, setTripType }: TriptypProps) => {
     <div className="w-full z-20 ">
       <p
         onClick={() => selectTripType("One Way")}
-        className={`hover:bg-gray-50 px-4 py-2 text-sm cursor-pointer ${
+        className={`hover:bg-gray-50 px-4 py-2 text-sm sm:text-base cursor-pointer ${
           tripType === "One Way" && "bg-gray-50"
         }`}
       >
@@ -19,7 +19,7 @@ const TripType = ({ tripType, setTripType }: TriptypProps) => {
       </p>
       <p
         onClick={() => selectTripType("Round Trip")}
-        className={`hover:bg-gray-50 px-4 py-2 text-sm cursor-pointer ${
+        className={`hover:bg-gray-50 px-4 py-2 text-sm sm:text-base cursor-pointer ${
           tripType === "Round Trip" && "bg-gray-50"
         }`}
       >

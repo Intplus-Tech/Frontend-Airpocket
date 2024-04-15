@@ -48,7 +48,7 @@ const Hero = () => {
                 onClick={() => setOpenDropdownType("trip")}
                 className=" rounded-md gap-2 relative sm:w-fit "
               >
-                <div className="flex items-center justify-between sm:justify-center bg-[#afdeeb] bg-opacity-40 px-1 py-1 md:px-6 md:py-3 rounded-md w-full sm:w-fit relative">
+                <div className="flex items-center justify-between sm:justify-center bg-[#afdeeb] bg-opacity-40 px-1 py-1 sm:px-6 sm:py-3 rounded-md w-full sm:w-fit relative">
                   {tripType}
                   <Image src={Arrow_down} alt="Arrow_down" />
                 </div>
@@ -58,10 +58,10 @@ const Hero = () => {
                   )}
                 </div>
               </div>
-              <div className="flex items-center gap-2 md:gap-8 sm:ml-[-4rem] lg:ml-[-6rem] ">
+              <div className="flex items-center gap-2 md:gap-8 sm:ml-[-4rem] lg:ml-[-6rem] w-full ">
                 <div
                   onClick={() => setOpenDropdownType("passenger")}
-                  className="w-full sm:w-fit  relative  flex items-center justify-center bg-[#afdeeb] bg-opacity-40 px-1 py-1 md:px-6 md:py-3 rounded-md gap-2 text-xs sm:text-base"
+                  className=" min-w-fit w-full sm:w-fit  relative  flex items-center justify-center bg-[#afdeeb] bg-opacity-40 px-2 py-1 sm:px-6 sm:py-3 rounded-md gap-2 text-xs sm:text-base"
                 >
                   Passenger <Image src={Arrow_down} alt="Arrow_down" />
                   <div className="absolute top-[2.4rem] left-0 w-fit  bg-white shadow-md rounded-md ">
@@ -70,7 +70,7 @@ const Hero = () => {
                 </div>
                 <div
                   onClick={() => setOpenDropdownType("class")}
-                  className=" w-full sm:w-fit relative flex items-center justify-center bg-[#afdeeb]  bg-opacity-40 px-1 py-1 md:px-6 md:py-3 rounded-md gap-2 text-xs sm:text-base whitespace-nowrap"
+                  className="min-w-fit w-full sm:w-fit relative flex items-center justify-center bg-[#afdeeb]  bg-opacity-40 px-1 py-1 sm:px-6 sm:py-3 rounded-md gap-2 text-xs sm:text-base whitespace-nowrap"
                 >
                   {classType} <Image src={Arrow_down} alt="Arrow_down" />
                   <div className="absolute top-[2.4rem] w-fit bg-white shadow-md rounded-sm ">

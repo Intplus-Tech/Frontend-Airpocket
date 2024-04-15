@@ -12,6 +12,8 @@ import { EyeIcon } from "@heroicons/react/24/solid";
 
 import Logo from "../../app/assets/airpocket.svg";
 import { FieldValues, useForm } from "react-hook-form";
+import { useSignupAccount } from "./slice/query";
+import { useToast } from "@/components/ui/use-toast";
 
 interface countryList {
   value: string;
@@ -20,7 +22,9 @@ interface countryList {
 [];
 
 const SignUp = () => {
-  const { register, reset, setValue, handleSubmit } = useForm();
+  const { toast } = useToast();
+  const { register, reset, setValue, handleSubmit, getValues } = useForm();
+  const { mutateAsync: signupAccount, isPending } = useSignupAccount();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -41,9 +45,27 @@ const SignUp = () => {
     setPhoneNumber(value);
   };
 
-  const handleOnSubmit = (data: FieldValues) => {
-    const updateData = { ...data, phoneNumber };
-    console.log(updateData);
+  const handleOnSubmit = async (data: FieldValues) => {
+    const response = await signupAccount({
+      ...data,
+      phone: `+${phoneNumber}`,
+      country: selectedOption?.label,
+    });
+
+    if (response?.success) {
+      toast({
+        // variant: "success",
+        title: `${response.success.status}|| Success`,
+        description: `${response.success.message}`,
+      });
+      reset();
+    } else {
+      toast({
+        // variant: "success",
+        title: `${response?.error.status}`,
+        description: `${response?.error.message}`,
+      });
+    }
   };
 
   //GET LIST OF COUNTRIES
@@ -76,18 +98,19 @@ const SignUp = () => {
                   <input
                     type="text"
                     id="firstName"
-                    {...register("firstName")}
+                    {...register("firstname")}
                     className="peer border border-gray-400 focus:border-[#1D91CC] rounded-lg w-full h-10 px-4 py-2 focus:outline-none text-[#1D91CC]"
                   />
                   <p className="peer-focus:text-[#1D91CC] text-gray-400 text-sm bg-white px-2 absolute top-0 left-6 translate-y-[-50%]">
                     First Name
                   </p>
                 </div>
+
                 <div className="relative">
                   <input
                     type="text"
                     id="lastName"
-                    {...register("lastName")}
+                    {...register("lastname")}
                     className="peer border border-gray-400 focus:border-[#1D91CC] rounded-lg w-full h-10 px-4 py-2 focus:outline-none text-[#1D91CC]"
                   />
                   <p className="peer-focus:text-[#1D91CC] text-gray-400 text-sm bg-white px-2 absolute top-0 left-6 translate-y-[-50%]">
@@ -175,6 +198,28 @@ const SignUp = () => {
                   )}
                 </span>
               </div>
+
+              <div className="relative">
+                <input
+                  type={showPassword ? "text" : "password"}
+                  id="password"
+                  {...register("passwordConfirm")}
+                  className="peer border border-gray-400 focus:border-[#1D91CC] rounded-lg w-full h-10 px-4 py-2 focus:outline-none text-[#1D91CC]"
+                />
+                <p className="peer-focus:text-[#1D91CC] text-gray-400 text-sm bg-white px-2 absolute top-0 left-6 translate-y-[-50%]">
+                  Confirm Password
+                </p>
+                <span
+                  className="absolute right-6 translate-y-[100%] text-[#1D91CC]"
+                  onClick={toggleShowPassword}
+                >
+                  {showPassword ? (
+                    <EyeSlashIcon className="w-4 h-4" />
+                  ) : (
+                    <EyeIcon className="w-4 h-4" />
+                  )}
+                </span>
+              </div>
             </div>
             {/* <div className="flex text-xs justify-between item-center "> */}
             <div className="space-x-1 text-xs flex items-start mt-2 text-gray-500">
@@ -191,7 +236,7 @@ const SignUp = () => {
               type="submit"
               className=" w-full rounded-md p-3 text-white bg-[#1D91CC] mt-5"
             >
-              Sign Up
+              {isPending ? "Loading..." : " Sign Up"}
             </button>
             <div className="text-sm flex  items-center gap-3 justify-center py-4 text-gray-500">
               <button>Already have an account?</button>

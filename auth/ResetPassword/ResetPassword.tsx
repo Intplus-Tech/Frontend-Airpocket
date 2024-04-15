@@ -5,12 +5,18 @@ import { useEffect, useState } from "react";
 import { EyeSlashIcon } from "@heroicons/react/24/solid";
 import { EyeIcon } from "@heroicons/react/24/solid";
 import Airpocket from "@/app/assets/airpocket.svg";
+import { FieldValues, useForm } from "react-hook-form";
+import { useResetPassword } from "./slice/query";
+import { useToast } from "@/components/ui/use-toast";
 
 type Props = {
   showSignInModal: boolean;
 };
 
-const ResetPassword = ({ showSignInModal }: Props) => {
+const ResetPassword = () => {
+  const { toast } = useToast();
+
+  const { register, reset, handleSubmit } = useForm();
   const [showFirstPassword, setShowFirstPassword] = useState(false);
   const [showSecondPassword, setShowSecondPassword] = useState(false);
 
@@ -23,29 +29,29 @@ const ResetPassword = ({ showSignInModal }: Props) => {
     setShowSecondPassword((prevState) => !prevState);
   };
 
-  const [firstPassword, setFirstPassword] = useState("");
-
-  const onChangeFirstPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFirstPassword(e.currentTarget.value);
-  };
-
-  const [secondPassword, setSecondPassword] = useState("");
-
-  const onChangeSecondPassword = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setSecondPassword(e.currentTarget.value);
-  };
-
-  useEffect(() => {
-    if (firstPassword !== secondPassword) {
-      setPasswordMatch(false);
+  const { mutateAsync: resetPassword } = useResetPassword();
+  const handleResetPassword = async (data: FieldValues) => {
+    const response = await resetPassword(data);
+    console.log(response);
+    if (response?.success) {
+      toast({
+        // variant: "success",
+        title: `${response.success.status}`,
+        description: `${response.success.message}`,
+      });
+      reset();
     } else {
-      setPasswordMatch(true);
+      toast({
+        // variant: "destructive",
+        title: `${response?.error.status}`,
+        description: `${response?.error.message}`,
+      });
     }
-  });
+  };
 
   return (
-    <div className="absolute inset-0 z-10">
-      <div className="bg-white w-[80vw] mx-auto mt-16 rounded-lg p-2 relative max-w-[480px]">
+    <div className="">
+      <div className="bg-white  mx-auto mt-4 rounded-lg p-2 relative max-w-[480px]">
         <div className="py-6 px-3">
           <div className="w-36 h-10 mx-auto relative">
             <Image src={Airpocket} fill alt="Logo" />
@@ -56,18 +62,17 @@ const ResetPassword = ({ showSignInModal }: Props) => {
               Create your new login credentials
             </p>
           </div>
-          <form>
+          <form onSubmit={handleSubmit(handleResetPassword)}>
             <div className="space-y-6 mt-10">
               <div className="relative">
                 <input
                   type={showFirstPassword ? "text" : "password"}
+                  {...register("password")}
                   className={`peer border rounded-lg w-full h-10 px-4 py-2 focus:outline-none ${
                     passwordMatch
                       ? "border-gray-400 focus:border-primaryColor text-primaryColor"
                       : "border-red-500 text-red-500"
                   }`}
-                  value={firstPassword}
-                  onChange={onChangeFirstPassword}
                 />
                 <p
                   className={`text-sm bg-white px-2 absolute top-0 left-6 translate-y-[-50%] ${
@@ -95,13 +100,12 @@ const ResetPassword = ({ showSignInModal }: Props) => {
               <div className="relative">
                 <input
                   type={showSecondPassword ? "text" : "password"}
+                  {...register("passwordConfirm")}
                   className={`peer border rounded-lg w-full h-10 px-4 py-2 focus:outline-none ${
                     passwordMatch
                       ? "border-gray-400 focus:border-primaryColor text-primaryColor"
                       : "border-red-500 text-red-500"
                   }`}
-                  value={secondPassword}
-                  onChange={onChangeSecondPassword}
                 />
                 <p
                   className={`text-sm bg-white px-2 absolute top-0 left-6 translate-y-[-50%] ${

@@ -1,14 +1,40 @@
+"use client";
 import Image from "next/image";
 import Link from "next/link";
 import { FieldValues, useForm } from "react-hook-form";
+import { useRouter } from "next/navigation";
+import { useToast } from "@/components/ui/use-toast";
 
 import Logo from "../../app/assets/airpocket.svg";
+import { useLoginAccount } from "./slice/query";
 
-const Login = () => {
-  const { register, reset, handleSubmit } = useForm();
+type LoginProps = {
+  setFormType: React.Dispatch<React.SetStateAction<string>>;
+};
 
-  const handleOnSubmit = (data: FieldValues) => {
-    console.log(data);
+const Login = ({ setFormType }: LoginProps) => {
+  const router = useRouter();
+  const { toast } = useToast();
+  const { register, reset, handleSubmit, getValues } = useForm();
+
+  const { mutateAsync: loginAccount, isPending } = useLoginAccount();
+
+  const handleOnSubmit = async (data: FieldValues) => {
+    const response = await loginAccount(data);
+    if (response?.success) {
+      toast({
+        // variant: "success",
+        title: `${response.success.status}`,
+        description: `${response.success.message}`,
+      });
+      reset();
+    } else {
+      toast({
+        // variant: "destructive",
+        title: `${response?.error.status}`,
+        description: `${response?.error.message}`,
+      });
+    }
   };
 
   return (
@@ -42,7 +68,7 @@ const Login = () => {
                 {...register("password")}
                 className="peer border border-gray-400 focus:border-[#1D91CC] rounded-lg w-full h-10 px-4 py-2 focus:outline-none text-[#1D91CC]"
               />
-              <p className="peer-focus:text-[#1D91CC] text-gray-400 text-sm bg-white px-2 absolute top-0 left-10 translate-y-[-50%]">
+              <p className="peer-focus:text-[#1D91CC] text-gray-400 text-sm bg-white px-2 absolute top-0 left-6 translate-y-[-50%]">
                 Password
               </p>
             </div>
@@ -52,15 +78,19 @@ const Login = () => {
               <input type="checkbox" name="" id="" />
               <span>Remember Password</span>
             </div>
-            <Link href="/forgot-password" className="text-[#1D91CC] ">
+            <button
+              type="button"
+              onClick={() => setFormType("fogot")}
+              className="text-[#1D91CC] "
+            >
               Forget Password
-            </Link>
+            </button>
           </div>
           <button
             type="submit"
             className="bg-[#1D91CC] text-white w-full rounded-md p-3 mt-10"
           >
-            Log In
+            {isPending ? "Loading..." : "Log In"}
           </button>
           <div className="text-sm flex flex-col items-center justify-between py-4 text-gray-500">
             <button>Don't have an account?</button>
