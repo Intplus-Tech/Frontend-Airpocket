@@ -28,9 +28,7 @@ const SignUp = () => {
     setShowPassword((prevState) => !prevState);
   };
 
-  const [selectedOption, setSelectedOption] = useState<countryList | null>(
-    null
-  );
+  const [selectedOption, setSelectedOption] = useState<countryList | null>(null);
   const [countryOptions, setCountryOptions] = useState<countryList[]>([]);
   const [phoneNumber, setPhoneNumber] = useState("");
   const handleChange = (selectedCountry: countryList | null) => {
@@ -65,9 +63,7 @@ const SignUp = () => {
           </div>
           <div className="text-center my-3 space-y-1">
             <p>Create your account</p>
-            <p className="text-sm text-gray-500">
-              Get started with best of flight prices
-            </p>
+            <p className="text-sm text-gray-500">Get started with best of flight prices</p>
           </div>
           <form onSubmit={handleSubmit(handleOnSubmit)}>
             <div className="space-y-6 mt-10">
@@ -97,13 +93,12 @@ const SignUp = () => {
               </div>
 
               <div className="relative">
-                {/* <input
-									type='number'
-									className='peer border border-gray-400 focus:border-[#1D91CC] rounded-lg w-full h-10 px-4 py-2 focus:outline-none text-[#1D91CC]'
-								/> */}
                 <PhoneInput
                   country={"ng"}
-                  inputClass="!border !border-gray-400 !focus:border-[#1D91CC] rounded-lg !w-full !h-10 px-4 py-2 focus:outline-none text-black"
+                  inputStyle={{ width: "100%", borderColor: "gray" }}
+                  buttonStyle={{ borderColor: "gray" }}
+                  inputClass="!border !border-gray-300 !focus:border-primaryColor rounded-lg !w-full !h-10 px-4 py-2 focus:outline-none text-primaryColor"
+                  buttonClass="!rounded-l-lg !border !border-gray-300"
                   containerClass="peer"
                   value={phoneNumber}
                   onChange={handleChangePhoneNumber}
@@ -136,7 +131,7 @@ const SignUp = () => {
                   value={selectedOption}
                   // onChange={handleChange}
                   placeholder=""
-                  className="peer border-none rounded-lg w-full h-10    "
+                  className="peer hidden border-none rounded-lg w-full h-10    "
                 />
                 <p className="peer-focus-within:text-[#1D91CC] outline-none text-gray-400 text-sm bg-white px-2 absolute top-0 left-6 translate-y-[-50%]">
                   Country
@@ -177,20 +172,17 @@ const SignUp = () => {
               </div>
             </div>
             {/* <div className="flex text-xs justify-between item-center "> */}
-            <div className="space-x-1 text-xs flex items-start mt-2 text-gray-500">
-              <input type="checkbox" name="" id="" className="mt-1 mr-2" />
+            <div className="gap-x-1 text-xs flex items-center mt-2 text-gray-500">
+              <input type="checkbox" name="" id="" />
               <span>
                 By entering and registering on the site, I agree to our{" "}
-                <Link href="" className="text-SecondaryColor">
+                <Link href="" className="text-[#1D91CC]">
                   Terms & Conditions
                 </Link>
               </span>
             </div>
             {/* </div> */}
-            <button
-              type="submit"
-              className=" w-full rounded-md p-3 text-white bg-[#1D91CC] mt-5"
-            >
+            <button type="submit" className=" w-full rounded-md p-3 text-white bg-[#1D91CC] mt-5">
               Sign Up
             </button>
             <div className="text-sm flex  items-center gap-3 justify-center py-4 text-gray-500">

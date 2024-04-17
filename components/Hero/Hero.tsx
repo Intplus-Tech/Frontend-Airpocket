@@ -8,6 +8,7 @@ import Test from "@/app/assets/test1.png";
 import ClassType from "../Classtype/Classtype";
 import PassengerType from "../Passengertype/Passengertype";
 import TripType from "../Triptype/Triptype";
+import SearchHistory from "../SearchHistory/SearchHistory";
 
 const Hero = () => {
   const [openDropdownType, setOpenDropdownType] = useState<string | null>(null);
@@ -42,7 +43,7 @@ const Hero = () => {
         </h1>
 
         <div className="bg-white shadow-sm md:shadow-lg rounded-md mt-4 lg:mt-6 px-6 py-6   w-full mx-auto">
-          <form action=" w-full">
+          <form className="w-full">
             <div className="grid grid-cols-1 min-[576px]:grid-cols-2 gap-8 w-full sm:w-fit">
               <div
                 onClick={() => setOpenDropdownType("trip")}
@@ -75,10 +76,7 @@ const Hero = () => {
                   {classType} <Image src={Arrow_down} alt="Arrow_down" />
                   <div className="absolute top-[2.4rem] w-fit bg-white shadow-md rounded-sm ">
                     {openDropdownType === "class" && (
-                      <ClassType
-                        classType={classType}
-                        setClassType={setClassType}
-                      />
+                      <ClassType classType={classType} setClassType={setClassType} />
                     )}
                   </div>
                 </div>
@@ -124,17 +122,14 @@ const Hero = () => {
               <div className="flex items-end text-white rounded-md ">
                 <button className="flex items-center sm:items-start gap-4 px-3 py-2 w-full sm:w-fit bg-[#03C3F8] rounded-md whitespace-nowrap text-sm">
                   Search Flights
-                  <Image
-                    src={Arrow_right}
-                    alt="arrow_right"
-                    className="flex items-center"
-                  />
+                  <Image src={Arrow_right} alt="arrow_right" className="flex items-center" />
                 </button>
               </div>
             </div>
           </form>
         </div>
       </div>
+      <SearchHistory />
     </div>
   );
 };

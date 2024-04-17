@@ -17,15 +17,12 @@ const Navbar = () => {
     <div>
       <MaxwidthWrapper>
         <section className="h-24 z-10 w-full flex justify-between items-center px-6 bg-transparent">
-          <div className=" w-full  flex items-center mr-6 ">
+          <div className=" w-1/2  justify-between gap-x-8 flex items-center mr-6 ">
             <div>
               <Image src={Airpocket} alt="Airpocket" />
             </div>
             <div className="hidden md:flex gap-6 text-[#283841] opacity-60 ">
-              <Link
-                className={`${pathname === "/" && "font-bold text-black"}`}
-                href={"/"}
-              >
+              <Link className={`${pathname === "/" && "font-bold text-black"}`} href={"/"}>
                 Home
               </Link>
               <Link
@@ -37,9 +34,7 @@ const Navbar = () => {
                 About Us
               </Link>
               <Link
-                className={`${
-                  pathname === "/flights" && "font-bold text-black"
-                }`}
+                className={`${pathname === "/flights" && "font-bold text-black"}`}
                 href={"/flights"}
               >
                 Flights
