@@ -1,33 +1,48 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import Image from "next/image";
+import { useDispatch, useSelector } from "react-redux";
+import { FieldValues, useForm } from "react-hook-form";
 
 import Arrow_down from "@/app/assets/arrow_down.svg";
 import Arrow_right from "@/app/assets/arrow_right.svg";
 import Test from "@/app/assets/test1.png";
-import ClassType from "../Classtype/Classtype";
-import PassengerType from "../Passengertype/Passengertype";
-import TripType from "../Triptype/Triptype";
+import ClassType from "../../components/Classtype/Classtype";
+import PassengerType from "../../components/Passengertype/Passengertype";
+import TripType from "../../components/Triptype/Triptype";
+import { User } from "@/types/type";
+// import { useSearchFlight } from "./slice/query";
+import { searchFlight } from "./slice/api";
+import { RootState } from "@/store/store";
 
 const Hero = () => {
+  const dispatch = useDispatch();
+  const { register, handleSubmit } = useForm();
+
   const [openDropdownType, setOpenDropdownType] = useState<string | null>(null);
   const [tripType, setTripType] = useState<string>("One Way");
   const [classType, setClassType] = useState("First class");
-  // const [noPeople, setNoPeople] = useState("passenger");
-  // const [, setWindowSize] = useState(window.innerWidth);
+  const [passengerNumber, setPassengerNumber] = useState<{
+    [key: string]: number;
+  }>({
+    adult: 0,
+    children: 0,
+    infants: 0,
+  });
 
-  // const handleResize = () => {
-  //   // Client-side-only code
-  //   setWindowSize(window.innerWidth);
-  // };
+  // const {} = useSelector((state: RootState) => {
+  //   state.search;
+  // });
 
-  // useEffect(() => {
-  //   window.addEventListener("resize", handleResize);
+  const [searchParams, setSearchParams] = useState<User>({});
+  const [availableFlight, setAvailableFlight] = useState();
 
-  //   return () => {
-  //     window.removeEventListener("resize", handleResize);
-  //   };
-  // }, []);
+  const handleSearchFlight = async (data: FieldValues) => {
+    searchFlight({ ...data }, dispatch);
+  };
+
+  // if (isLoading) {
+  // }
 
   return (
     <div className="h-full w-full relative mt-6 ">
@@ -41,8 +56,8 @@ const Hero = () => {
           Embark on a journey to secure the ideal gateway
         </h1>
 
-        <div className="bg-white shadow-sm md:shadow-lg rounded-md mt-4 lg:mt-6 px-6 py-6   w-full mx-auto">
-          <form action=" w-full">
+        <div className="bg-red-500 shadow-sm md:shadow-lg rounded-md mt-4 lg:mt-6 px-6 py-6   w-full mx-auto">
+          <form onSubmit={handleSubmit(handleSearchFlight)} className="w-full">
             <div className="grid grid-cols-1 min-[576px]:grid-cols-2 gap-8 w-full sm:w-fit">
               <div
                 onClick={() => setOpenDropdownType("trip")}
@@ -54,7 +69,11 @@ const Hero = () => {
                 </div>
                 <div className="absolute top-[2.4rem] z-10 w-fit bg-white shadow-md rounded-sm ">
                   {openDropdownType === "trip" && (
-                    <TripType tripType={tripType} setTripType={setTripType} />
+                    <TripType
+                      tripType={tripType}
+                      setTripType={setTripType}
+                      setOpenDropdownType={setOpenDropdownType}
+                    />
                   )}
                 </div>
               </div>
@@ -64,8 +83,13 @@ const Hero = () => {
                   className=" min-w-fit w-full sm:w-fit  relative  flex items-center justify-center bg-[#afdeeb] bg-opacity-40 px-2 py-1 sm:px-6 sm:py-3 rounded-md gap-2 text-xs sm:text-base"
                 >
                   Passenger <Image src={Arrow_down} alt="Arrow_down" />
-                  <div className="absolute top-[2.4rem] left-0 w-fit  bg-white shadow-md rounded-md ">
-                    {openDropdownType === "passenger" && <PassengerType />}
+                  <div className="absolute top-[2.4rem] left-0 w-fit z-[50] bg-white shadow-md rounded-md ">
+                    {openDropdownType === "passenger" && (
+                      <PassengerType
+                        passengerNumber={passengerNumber}
+                        setPassengerNumber={setPassengerNumber}
+                      />
+                    )}
                   </div>
                 </div>
                 <div
@@ -73,7 +97,7 @@ const Hero = () => {
                   className="min-w-fit w-full sm:w-fit relative flex items-center justify-center bg-[#afdeeb]  bg-opacity-40 px-1 py-1 sm:px-6 sm:py-3 rounded-md gap-2 text-xs sm:text-base whitespace-nowrap"
                 >
                   {classType} <Image src={Arrow_down} alt="Arrow_down" />
-                  <div className="absolute top-[2.4rem] w-fit bg-white shadow-md rounded-sm ">
+                  <div className="absolute top-[2.4rem] w-fit z-[50] bg-white shadow-md rounded-sm ">
                     {openDropdownType === "class" && (
                       <ClassType
                         classType={classType}
@@ -89,6 +113,7 @@ const Hero = () => {
                 <label className="text-sm md:text-base">Departure</label>
                 <input
                   type="text"
+                  {...register("originLocationCode")}
                   placeholder="Wher are you coming from "
                   className="bg-[#283841] bg-opacity-10 p-2 rounded-md border-none outline-none"
                 />
@@ -98,6 +123,7 @@ const Hero = () => {
                 <label className="text-sm md:text-base">Destination</label>
                 <input
                   type="text"
+                  {...register("destinationLocationCode")}
                   placeholder="Wher are you going "
                   className="bg-[#283841] bg-opacity-10 p-2 rounded-md border-none outline-none  "
                 />
@@ -108,6 +134,7 @@ const Hero = () => {
                 <label className="text-sm md:text-base">Check in</label>
                 <input
                   type="date"
+                  {...register("departureDate")}
                   placeholder="choose date"
                   className="bg-[#283841] bg-opacity-10 p-2 h-[40px] rounded-md border-none outline-none"
                 />
@@ -118,11 +145,15 @@ const Hero = () => {
                 <label className="text-sm md:text-base">Check out</label>
                 <input
                   type="date"
+                  {...register("returnDate")}
                   className="bg-[#283841] bg-opacity-10 p-2 h-[40px] rounded-md border-none outline-none"
                 />
               </div>
               <div className="flex items-end text-white rounded-md ">
-                <button className="flex items-center sm:items-start gap-4 px-3 py-2 w-full sm:w-fit bg-[#03C3F8] rounded-md whitespace-nowrap text-sm">
+                <button
+                  type="submit"
+                  className="flex items-center sm:items-start gap-4 px-3 py-2 w-full sm:w-fit bg-[#03C3F8] rounded-md whitespace-nowrap text-sm"
+                >
                   Search Flights
                   <Image
                     src={Arrow_right}

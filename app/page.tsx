@@ -1,7 +1,7 @@
 import Image from "next/image";
 
 import MaxwidthWrapper from "@/shared/MaxWidthWrapper/MaxWidthWrapper";
-import Hero from "@/components/Hero/Hero";
+import Hero from "@/Feature/Hero/Hero";
 import Places from "@/components/Places/Places";
 import Testimonials from "@/components/Testimonials/Testimonials";
 import Newsletter from "@/components/Newsletter/Newletter";

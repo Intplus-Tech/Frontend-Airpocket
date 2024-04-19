@@ -3,6 +3,7 @@ import { z } from "zod";
 export type PassengersProps = {
   id: string;
   text: string;
+  value?: string;
 }[];
 
 export type AvailableFlightProps = {

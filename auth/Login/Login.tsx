@@ -39,7 +39,7 @@ const Login = ({ setFormType }: LoginProps) => {
 
   return (
     // <div className=" mt-[-6rem] inset-0 z-10">
-    <div className="  w-[80vw] mx-auto  rounded-lg p-2 relative max-w-[480px]">
+    <div className="  w-full mx-auto  rounded-lg p-2 relative max-w-[480px]">
       <div className="py-6 px-3">
         <div className="w-36 h-10 mx-auto relative">
           <Image src={Logo} alt="Logo" className="mx-auto" />

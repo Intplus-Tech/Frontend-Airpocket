@@ -2,19 +2,19 @@ import { PassengersProps } from "@/types/type";
 
 type ClassTypProps = {
   classType: string;
-  setClassType: React.Dispatch<React.SetStateAction<string>>;
+  setClassType?: React.Dispatch<React.SetStateAction<string>>;
 };
 
 const ClassType = ({ setClassType }: ClassTypProps) => {
   const passengers: PassengersProps = [
-    { id: "1", text: "Economy" },
-    { id: "1", text: "Economy Premium" },
-    { id: "1", text: "Business Class" },
-    { id: "1", text: "First Class" },
+    { id: "1", text: "Economy", value: "ECONOMY" },
+    { id: "2", text: "Economy Premium", value: "ECONONMYPREMIUM" },
+    { id: "3", text: "Business Class", value: "BUSINESSCLASS" },
+    { id: "4", text: "First Class", value: "FIRSTCLASS" },
   ];
 
   const selectClassType = (type: string) => {
-    setClassType(type);
+    setClassType?.(type);
   };
 
   return (
